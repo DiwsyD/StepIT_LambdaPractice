@@ -1,5 +1,7 @@
 package org.stepIt.lambda.practice.robot;
 
+import jdk.jshell.spi.ExecutionControl;
+
 public interface RobotTemplate<T, R> {
 
     void introduce();
@@ -16,4 +18,5 @@ public interface RobotTemplate<T, R> {
 
     T combineThings(T thingOne, T thingTwo);
 
+    R performCustomOperation() throws ExecutionControl.NotImplementedException;
 }

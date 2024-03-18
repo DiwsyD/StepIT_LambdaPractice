@@ -1,6 +1,8 @@
 package org.stepIt.lambda.practice.robot.impl;
 
 
+import jdk.jshell.spi.ExecutionControl;
+import org.stepIt.lambda.practice.custom.CustomFunctionalInterfaceForLambda;
 import org.stepIt.lambda.practice.robot.RobotTemplate;
 
 import java.util.function.BinaryOperator;
@@ -19,6 +21,7 @@ public class Robot<T, R> implements RobotTemplate<T, R> {
     private final Function<T, R> function;
     private final UnaryOperator<T> unaryOperator;
     private final BinaryOperator<T> binaryOperator;
+    private final CustomFunctionalInterfaceForLambda<T, String, String, R> customFunctionalInterfaceForLambda;
 
     public Robot(Runnable runnable,
                  Supplier<R> supplier,
@@ -26,7 +29,9 @@ public class Robot<T, R> implements RobotTemplate<T, R> {
                  Predicate<T> predicate,
                  Function<T, R> function,
                  UnaryOperator<T> unaryOperator,
-                 BinaryOperator<T> binaryOperator) {
+                 BinaryOperator<T> binaryOperator,
+                 CustomFunctionalInterfaceForLambda<T, String, String, R> customFunctionalInterfaceForLambda
+    ) {
         this.runnable = runnable;
         this.supplier = supplier;
         this.consumer = consumer;
@@ -34,6 +39,7 @@ public class Robot<T, R> implements RobotTemplate<T, R> {
         this.function = function;
         this.unaryOperator = unaryOperator;
         this.binaryOperator = binaryOperator;
+        this.customFunctionalInterfaceForLambda = customFunctionalInterfaceForLambda;
     }
 
     private Robot(Builder<T, R> builder) {
@@ -44,6 +50,7 @@ public class Robot<T, R> implements RobotTemplate<T, R> {
         this.function = builder.function;
         this.unaryOperator = builder.unaryOperator;
         this.binaryOperator = builder.binaryOperator;
+        this.customFunctionalInterfaceForLambda = builder.customFunctionalInterfaceForLambda;
     }
 
     @Override
@@ -81,6 +88,11 @@ public class Robot<T, R> implements RobotTemplate<T, R> {
         return binaryOperator.apply(thingOne, thingTwo);
     }
 
+    @Override
+    public R performCustomOperation() throws ExecutionControl.NotImplementedException {
+        throw new ExecutionControl.NotImplementedException("You should implement this method");
+    }
+
     public static class Builder<T, R> {
 
         private Runnable runnable;
@@ -90,6 +102,7 @@ public class Robot<T, R> implements RobotTemplate<T, R> {
         private Function<T, R> function;
         private UnaryOperator<T> unaryOperator;
         private BinaryOperator<T> binaryOperator;
+        private CustomFunctionalInterfaceForLambda<T, String, String, R> customFunctionalInterfaceForLambda;
 
         public Builder() {
             // Set default values if needed
@@ -129,6 +142,13 @@ public class Robot<T, R> implements RobotTemplate<T, R> {
 
         public Builder<T, R> addCombining(BinaryOperator<T> binaryOperator) {
             this.binaryOperator = binaryOperator;
+            return this;
+        }
+
+        public Builder<T, R> addCustomOperation(
+                CustomFunctionalInterfaceForLambda<T, String, String, R> customFunctionalInterfaceForLambda
+        ) {
+            this.customFunctionalInterfaceForLambda = customFunctionalInterfaceForLambda;
             return this;
         }
 

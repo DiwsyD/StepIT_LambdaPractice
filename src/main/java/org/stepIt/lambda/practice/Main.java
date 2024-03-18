@@ -1,10 +1,11 @@
 package org.stepIt.lambda.practice;
 
+import jdk.jshell.spi.ExecutionControl;
 import org.stepIt.lambda.practice.robot.impl.Robot;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionControl.NotImplementedException {
 
         //Create and configure Robot here:
         Robot<Object, Object> robot = null;
@@ -37,6 +38,10 @@ public class Main {
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~");
 
         Object robotCombiningResult = robot.combineThings(new Object(), new Object());
+
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        Object customOperationResult = robot.performCustomOperation();
 
         System.out.println("-------------------------");
     }
